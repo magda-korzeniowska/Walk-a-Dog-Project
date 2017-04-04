@@ -1,0 +1,10 @@
+
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+
+<strong>Województwo:</strong> {{ profile.get_voivodeship_display }} <br>
+<strong>Miasto:</strong> {{ profile.city }} <br>
+<strong>Ulubione miejsce na spacery:</strong> {{ profile.fav_walking_place }}<br><br>
+
+{% endblock %}

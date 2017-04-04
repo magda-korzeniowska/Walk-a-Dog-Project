@@ -16,9 +16,10 @@
        {% if user.is_authenticated %}
         <strong>Zalogowany: {{ user }}</strong> <a href="{% url 'logout' %}"><input type="submit" value="Wyloguj"></a>
         {% else %}
-            <a href="{% url 'login' %}"><input type="submit" value="Zaloguj"></a>
+            <a href="{% url 'login' %}"><input type="submit" value="ZALOGUJ SIĘ"></a>
+
+            <a href="{% url 'register' %}"><input type="submit" value="ZAREJESTRUJ SIĘ"></a>
         {% endif %}
-            <a href="{% url 'register' %}"><input type="submit" value="Zarejestruj"></a>
     </body>
 </html>
 

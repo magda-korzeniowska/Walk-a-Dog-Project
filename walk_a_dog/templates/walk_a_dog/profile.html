@@ -1,0 +1,15 @@
+
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+
+<strong>Nazwa użtkownika:</strong> {{ user.username }} <br>
+<strong>Imię:</strong> {{ user.first_name }} <br>
+<strong>Nazwisko:</strong> {{ user.last_name }}<br>
+<strong>e-mai:</strong> {{ user.email }}<br><br>
+
+
+<a href="{% url 'add-details' %}">Uzupełnij profil</a>
+
+
+{% endblock %}

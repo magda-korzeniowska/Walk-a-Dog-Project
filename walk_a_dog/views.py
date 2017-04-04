@@ -1,9 +1,10 @@
 from django.contrib.auth import login, logout, get_user_model
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 from django.views import View
 
-from walk_a_dog.forms import AuthForm, RegisterProfileForm
+from walk_a_dog.forms import AuthForm, RegisterProfileForm, AddDetailsForm
 from walk_a_dog.models import UserProfile
 
 
@@ -46,10 +47,46 @@ class LoginView(View):
         else:
             return render(request, 'walk_a_dog/login.html', ctx)
 
-
 class LogoutView(View):
     def get (self,request):
         logout(request)
         return HttpResponseRedirect(reverse('index'))
 
+
+# class ProfileView(View):
+#     def get(self, request, id):
+#         profile = UserProfile.objects.get(pk=id)
+#         ctx = {'profile': profile}
+#         return render(request, 'walk_a_dog/profile.html', ctx)
+
+class ProfileView(View):
+    def get(self, request, id):
+        user = User.objects.get(pk=id)
+        ctx = {'profile': user}
+        return render(request, 'walk_a_dog/profile.html', ctx)
+
+
+
+
+class AddDetailsView(View):
+    def get(self,request):
+        ctx = {'form': AddDetailsForm()}
+        return render(request, 'walk_a_dog/add_details.html', ctx)
+
+    def post(self, request):
+        form = AddDetailsForm(data=request.POST)
+        ctx = {'form': form}
+        if form.is_valid():
+            voivodeship = form.cleaned_data['voivodeship']
+            city = form.cleaned_data['city']
+            fav_walking_place = form.cleaned_data['fav_walking_price']
+
+            profile_details = UserProfile.objects.create(
+                voivodeship=voivodeship,
+                city=city,
+                fav_walking_place=fav_walking_place
+            )
+            return HttpResponseRedirect(profile_details.get_absolute_url())
+
+        return render(request, "walk_a_dog/add_details.html", ctx)
 

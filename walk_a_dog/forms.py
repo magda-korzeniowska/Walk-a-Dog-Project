@@ -3,7 +3,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-from walk_a_dog.models import UserProfile
+from walk_a_dog.models import UserProfile, VOIVODESHIP
+
 
 class RegisterProfileForm(forms.ModelForm):
     class Meta:
@@ -27,16 +28,15 @@ class AuthForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-
-        #do views
         username = cleaned_data.get('username', None)
         password = cleaned_data.get('password', None)
         user = authenticate(username=username, password=password)
         if user is None:
             raise forms.ValidationError("Błędna nazwa użytkownika lub hasło")
-
-
         cleaned_data['user'] = user
         return cleaned_data
 
-
+class AddDetailsForm(forms.Form):
+    voivodeship = forms.MultipleChoiceField(label="województwo", choices=VOIVODESHIP)
+    city = forms.CharField(label="miasto", max_length=64)
+    fav_walking_place = forms.CharField(label="ulubione miejsce na spacery", widget=forms.Textarea)
