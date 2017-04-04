@@ -1,0 +1,15 @@
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+<h2>Formularz rejestracji</h2>
+<form action="" method="post">
+    {% csrf_token %}
+    <strong>Nazwa użytkownika:</strong>{{ form.username }} <br>
+    <strong>Imię:</strong>{{ form.first_name }} <br>
+    <strong>Nazwisko:</strong>{{ form.last_name }} <br>
+    <strong>Adres e-mail:</strong>{{ form.email }} <br>
+    <strong>Hasło:</strong>{{ form.password }} <br>
+    <input type="Submit" value="Zarejestruj">
+</form>
+
+{% endblock %}

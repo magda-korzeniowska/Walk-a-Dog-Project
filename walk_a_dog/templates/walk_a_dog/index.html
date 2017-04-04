@@ -1,0 +1,26 @@
+{% load static %}
+<!doctype html>
+
+<html>
+    <head><meta charset="utf-8"></head>
+    <body>
+        <h1>
+            <img src="{% static 'running_dexter.jpg' %}" width="200"/>
+            WALK A DOG - FIND NEW FRIENDS!
+        </h1>
+        {% block content %}
+        {% endblock %}
+
+        <br>
+
+       {% if user.is_authenticated %}
+        <strong>Zalogowany: {{ user }}</strong> <a href="{% url 'logout' %}"><input type="submit" value="Wyloguj"></a>
+        {% else %}
+            <a href="{% url 'login' %}"><input type="submit" value="Zaloguj"></a>
+        {% endif %}
+            <a href="{% url 'register' %}"><input type="submit" value="Zarejestruj"></a>
+    </body>
+</html>
+
+
+

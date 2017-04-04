@@ -16,6 +16,17 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from walk_a_dog.views import IndexView, LoginView, LogoutView, RegisterProfileView
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^walkadog$', IndexView.as_view(), name="index"),
+    url(r'^walkadog/login$', LoginView.as_view(), name='login'),
+    url(r'^walkadog/logout$', LogoutView.as_view(), name='logout'),
+    url(r'^walkadog/register$', RegisterProfileView.as_view(), name='register'),
+
+    # url(r'^category/(?P<slug>[-\w]+)', CategoryView.as_view(), name="category"),
+    # # !!!!! slug tu wchodzi dziwny więc -\w
+    # url(r'^product/(?P<product_id>(\d)+)', ProductView.as_view(), name="product"),
+    # # url(r'^products/$', ProductsView.as_view(), name='products'),
 ]
