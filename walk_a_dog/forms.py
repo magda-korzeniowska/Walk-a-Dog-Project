@@ -51,5 +51,9 @@ class AddDogForm(ModelForm):
 class AddWalkForm(ModelForm):
     class Meta:
         model = Walk
-        fields = ['voivodeship', 'city', 'date_start', 'date_stop']
+        widgets = {'date_start': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'dd.mm.rrrr gg:mm'}),
+                   'date_stop': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'dd.mm.rrrr gg:mm'})
+                   }
+        fields = ['voivodeship', 'city', 'place', 'date_start', 'date_stop']
+
 

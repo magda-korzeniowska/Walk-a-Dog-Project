@@ -4,6 +4,9 @@
 
 <strong>Województwo:</strong> {{ profile.get_voivodeship_display }} <br>
 <strong>Miasto:</strong> {{ profile.city }} <br>
-<strong>Ulubione miejsce na spacery:</strong> {{ profile.fav_walking_place }}<br><br>
+<strong>Ulubione miejsce na spacery:</strong> {{ profile.fav_walking_place }}<br><br><br>
+
+
+<a href="{% url 'add-dog' %}">DODAJ PSA</a><br><br><br>
 
 {% endblock %}

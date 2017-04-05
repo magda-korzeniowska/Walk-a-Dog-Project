@@ -25,8 +25,8 @@ VOIVODESHIP = (
 )
 
 GENDER = (
-    (1, "male"),
-    (2, "female")
+    (1, "pies"),
+    (2, "suka")
 )
 
 class UserProfile(models.Model):
@@ -52,10 +52,10 @@ class Dog(models.Model):
     year_of_birth = models.IntegerField(verbose_name='Rok urodzenia')
     breed = models.CharField(max_length=64, verbose_name='rasa')
     description = models.TextField(blank=True, null=True, verbose_name='Opis')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return "{} | {} | {} | {}".format(self.name, self.gender, self.year_of_birth, self.breed)
+        return "{} | {} | {} | {}".format(self.name, self.get_gender_display(), self.year_of_birth, self.breed)
 
     class Meta:
         verbose_name = 'Pies'
@@ -64,12 +64,17 @@ class Dog(models.Model):
 class Walk(models.Model):
     voivodeship = models.IntegerField(choices=VOIVODESHIP, verbose_name='Województwo')
     city = models.CharField(max_length=64, verbose_name='Miasto')
+    place = models.TextField(blank=True, null=True, verbose_name='Miejsce spaceru')
     date_start = models.DateTimeField(verbose_name='Początek spaceru')
     date_stop = models.DateTimeField(verbose_name='Koniec spaceru')
     dog = models.ManyToManyField(Dog)
 
     def __str__(self):
-        return "{} | {} | {} | {}".format(self.voivodeship, self.city, self.dog)
+        a = []
+        for dog in self.dog.all():
+            a.append(dog.name)
+        names = ", ".join(a)
+        return "{} | {} | {} | {}".format(self.get_voivodeship_display(), self.city, self.place, names)
 
     class Meta:
         verbose_name = 'Spacer'

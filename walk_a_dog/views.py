@@ -79,11 +79,13 @@ class AddDetailsView(View):
         if form.is_valid():
             voivodeship = form.cleaned_data['voivodeship']
             city = form.cleaned_data['city']
+            place = form.cleaned_data['place']
             fav_walking_place = form.cleaned_data['fav_walking_place']
 
             userprofile = UserProfile.objects.create(
                 voivodeship=voivodeship,
                 city=city,
+                place=place,
                 fav_walking_place=fav_walking_place
             )
             return HttpResponseRedirect(userprofile.get_absolute_url())
@@ -99,7 +101,7 @@ class ProfileDetailedView(View):
 class UpdateProfileView(UpdateView):
     template = 'walk_a_dog/userprofile_form.html'
     model = UserProfile
-    fields = ['voivodeship','city','fav_walking_place']
+    fields = ['voivodeship','city', 'place', 'fav_walking_place']
     success_url = 'index.html'
 
 
@@ -115,7 +117,7 @@ class AddDogView(View):
         ctx = {'form': form}
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('/index'))
+            return HttpResponseRedirect(reverse('index'))
         else:
             return render(request, "add_dog.html", ctx)
 
@@ -131,13 +133,12 @@ class AddWalkView(View):
         ctx = {'form': AddWalkForm()}
         return render(request, "walk_a_dog/add_walk.html", ctx)
 
-
     def post(self, request):
         form = AddWalkForm(data=request.POST)
         ctx = {'form': form}
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('/index'))
+            return HttpResponseRedirect(reverse('index'))
         else:
             return render(request, "add_walk.html", ctx)
 

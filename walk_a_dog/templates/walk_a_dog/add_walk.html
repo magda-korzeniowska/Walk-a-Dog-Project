@@ -3,8 +3,11 @@
 {% block content %}
 <form action="{% url 'add-walk' %}" method="POST">
 	{% csrf_token %}
-	{{ form.as_ul }}<br><br>
+	{{ form.as_ul }}
+	<br><br>
+
 	<input type="submit" value="Dodaj spacer"/>
 </form>
 
 {% endblock %}
+
