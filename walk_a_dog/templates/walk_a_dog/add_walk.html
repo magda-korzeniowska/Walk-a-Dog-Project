@@ -1,0 +1,10 @@
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+<form action="{% url 'add-walk' %}" method="POST">
+	{% csrf_token %}
+	{{ form.as_ul }}<br><br>
+	<input type="submit" value="Dodaj spacer"/>
+</form>
+
+{% endblock %}

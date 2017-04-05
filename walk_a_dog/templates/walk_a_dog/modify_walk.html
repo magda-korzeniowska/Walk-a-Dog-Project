@@ -1,0 +1,9 @@
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+<form action="" method="POST">
+{% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit" value="Zapisz">
+</form>
+{% endblock %}

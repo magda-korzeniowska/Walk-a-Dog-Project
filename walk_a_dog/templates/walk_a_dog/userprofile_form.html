@@ -1,0 +1,17 @@
+
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+
+<h2>Uzupełnij profil:</h2>
+<form action="" method="post">
+    {% csrf_token %}
+    <strong>Województwo:</strong>{{ form.voivodeship }} <br>
+    <strong>Miasto:</strong>{{ form.city }} <br>
+    <strong>Ulubione miejsce na spacery:</strong>{{ form.fav_walking_place }} <br>
+
+
+    <input type="Submit" value="Zapisz">
+</form>
+
+{% endblock %}

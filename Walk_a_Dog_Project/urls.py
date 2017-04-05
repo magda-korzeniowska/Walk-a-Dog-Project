@@ -16,7 +16,15 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from walk_a_dog.views import IndexView, LoginView, LogoutView, RegisterProfileView, ProfileView, AddDetailsView
+from walk_a_dog.views import (
+    IndexView,
+    LoginView,
+    LogoutView,
+    RegisterProfileView,
+    ProfileView,
+    ProfileDetailedView,
+    AddDetailsView,
+    UpdateProfileView, AddDogView, ModifyDogView, AddWalkView, ModifyWalkView)
 
 
 urlpatterns = [
@@ -27,6 +35,14 @@ urlpatterns = [
     url(r'^walkadog/register$', RegisterProfileView.as_view(), name='register'),
     url(r'^walkadog/profile/(?P<id>(\d)+)$', ProfileView.as_view(), name='profile'),
     url(r'^walkadog/add_details$', AddDetailsView.as_view(), name='add-details'),
+    url(r'^walkadog/profile_details/(?P<id>(\d)+)$', ProfileDetailedView.as_view(), name='profile-details'),
+    url(r'^walkadog/update_profile/(?P<pk>(\d+))$', UpdateProfileView.as_view(), name='update-profile'),
+    url(r'^walkadog/add_dog$', AddDogView.as_view(), name='add-dog'),
+    url(r'^walkadog/modify_dog/(?P<pk>(\d+))', ModifyDogView.as_view(), name='modify-dog'),
+    url(r'^walkadog/add_walk$', AddWalkView.as_view(), name='add-walk'),
+    url(r'^walkadog/modify_walk/(?P<pk>(\d+))', ModifyWalkView.as_view(), name='modify-walk'),
+
+
 
     # url(r'^category/(?P<slug>[-\w]+)', CategoryView.as_view(), name="category"),
     # # !!!!! slug tu wchodzi dziwny więc -\w

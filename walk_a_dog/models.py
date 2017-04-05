@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.shortcuts import render, reverse
 
 
 VOIVODESHIP = (
+    (0, "wybierz województwo"),
     (1, "woj. dolnośląskie"),
     (2, "woj. kujawsko-pomorskie"),
     (3, "woj. lubelskie"),
@@ -28,10 +30,10 @@ GENDER = (
 )
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, null=True, default=None)
-    voivodeship = models.IntegerField(choices=VOIVODESHIP)
-    city = models.CharField(max_length=64)
-    fav_walking_place = models.TextField()
+    user = models.OneToOneField(User, null=True, blank=True)
+    voivodeship = models.IntegerField(choices=VOIVODESHIP, default=0)
+    city = models.CharField(max_length=64, blank=True)
+    fav_walking_place = models.TextField(blank=True)
 
     def __str__(self):
         return "{} | {} | {}".format(self.user, self.city, self.fav_walking_place)
@@ -40,13 +42,16 @@ class UserProfile(models.Model):
         verbose_name = 'Profil użytkownika'
         verbose_name_plural = 'Profile użytkowników'
 
+    def get_absolute_url(self):
+        return reverse('profile-details', kwargs={'id': self.id})
+
 class Dog(models.Model):
-    avatar = models.ImageField(upload_to='/static/')
-    name = models.CharField(max_length=64)
-    gender = models.IntegerField(choices=GENDER)
-    year_of_birth = models.IntegerField()
-    breed = models.CharField(max_length=64)
-    description = models.TextField(null=True, default=None)
+    avatar = models.ImageField(upload_to='/static/', blank=True, null=True, verbose_name='Zdjęcie')
+    name = models.CharField(max_length=64, verbose_name='Imię')
+    gender = models.IntegerField(choices=GENDER, verbose_name='Płeć')
+    year_of_birth = models.IntegerField(verbose_name='Rok urodzenia')
+    breed = models.CharField(max_length=64, verbose_name='rasa')
+    description = models.TextField(blank=True, null=True, verbose_name='Opis')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -57,10 +62,10 @@ class Dog(models.Model):
         verbose_name_plural = 'Psy'
 
 class Walk(models.Model):
-    voivodeship = models.IntegerField(choices=VOIVODESHIP)
-    city = models.CharField(max_length=64)
-    date_start = models.DateTimeField()
-    date_stop = models.DateTimeField()
+    voivodeship = models.IntegerField(choices=VOIVODESHIP, verbose_name='Województwo')
+    city = models.CharField(max_length=64, verbose_name='Miasto')
+    date_start = models.DateTimeField(verbose_name='Początek spaceru')
+    date_stop = models.DateTimeField(verbose_name='Koniec spaceru')
     dog = models.ManyToManyField(Dog)
 
     def __str__(self):
