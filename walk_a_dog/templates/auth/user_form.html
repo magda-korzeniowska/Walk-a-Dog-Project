@@ -1,0 +1,17 @@
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+{% if request.user.id == user.id %}
+<form action="" method="post">
+    {% csrf_token %}
+    <strong>Nazwa użytkownika:</strong>{{ form.username }} <br>
+    <strong>Imię:</strong>{{ form.first_name }} <br>
+    <strong>Nazwisko:</strong>{{ form.last_name }} <br>
+    <strong>Adres e-mail:</strong>{{ form.email }} <br>
+<input type="submit" value="Zapisz">
+</form>
+{% else %}
+<p> Nie masz uprawnień do edycji!</p>
+{% endif %}
+{% endblock %}
+

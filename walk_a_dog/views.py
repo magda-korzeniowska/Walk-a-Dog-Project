@@ -98,12 +98,18 @@ class ProfileDetailedView(View):
         ctx = {'profile': user}
         return render(request, 'walk_a_dog/profile_details.html', ctx)
 
+
+class UpdateUserView(UpdateView):
+    template = 'walk_a_dog/register_profile_form.html'
+    model = User
+    fields = ['username', 'first_name', 'last_name', 'email', 'password']
+
+
 class UpdateProfileView(UpdateView):
     template = 'walk_a_dog/userprofile_form.html'
     model = UserProfile
     fields = ['voivodeship','city','fav_walking_place']
     success_url = 'index.html'
-
 
 class AddDogView(View):
 
@@ -181,6 +187,28 @@ class JoinWalkView(View):
         dogs = request.user.dog_set.all()
         walk.dog.add(*dogs)
         walk.save()
-        return render(request, 'walk_a_dog/walks.html')
+        return render(request, 'walk_a_dog/join_walk.html')
+
+
+
+
+#
+#
+# class ProfileView(View):
+#     def get(self, request, id):
+#         user = User.objects.get(pk=id)
+#         ctx = {'profile': user}
+#         return render(request, 'walk_a_dog/profile.html', ctx)
+
+
+class ModifyProfileView(View):
+    def get(self, request, id):
+        user = request.user
+        profile = UserProfile.objects.get(pk=id) #(user=request.user)
+        dogs = request.user.dog_set.all()
+        ctx = {'profile': profile,
+               'user': user,
+               'dogs': dogs}
+        return render(request, 'walk_a_dog/modify_profile.html', ctx)
 
 

@@ -24,7 +24,10 @@ from walk_a_dog.views import (
     ProfileView,
     ProfileDetailedView,
     AddDetailsView,
-    UpdateProfileView, AddDogView, ModifyDogView, AddWalkView, ModifyWalkView, DogView, WalkView, JoinWalkView)
+    UpdateProfileView, AddDogView, ModifyDogView, AddWalkView, ModifyWalkView, DogView, WalkView, JoinWalkView,
+    UpdateUserView,
+    ModifyProfileView
+    )
 
 
 urlpatterns = [
@@ -36,7 +39,9 @@ urlpatterns = [
     url(r'^walkadog/profile/(?P<id>(\d)+)$', ProfileView.as_view(), name='profile'),
     url(r'^walkadog/add_details$', AddDetailsView.as_view(), name='add-details'),
     url(r'^walkadog/profile_details/(?P<id>(\d)+)$', ProfileDetailedView.as_view(), name='profile-details'),
+    url(r'^walkadog/update_user/(?P<pk>(\d+))$', UpdateUserView.as_view(), name='update-user'),
     url(r'^walkadog/update_profile/(?P<pk>(\d+))$', UpdateProfileView.as_view(), name='update-profile'),
+    url(r'^walkadog/modify_profile/(?P<id>(\d+))', ModifyProfileView.as_view(), name='modify-profile'),
     url(r'^walkadog/add_dog$', AddDogView.as_view(), name='add-dog'),
     # url(r'^walkadog/dog_added$', AddDogView.as_view(), name='dog-added'),
     url(r'^walkadog/modify_dog/(?P<pk>(\d+))', ModifyDogView.as_view(), name='modify-dog'),

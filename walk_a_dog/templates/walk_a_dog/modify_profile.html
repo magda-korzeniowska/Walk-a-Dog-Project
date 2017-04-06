@@ -1,0 +1,40 @@
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+<h4>Dane konta</h4>
+<strong>Nazwa użytkownika:</strong> {{ user.username }} <br>
+<strong>Imię:</strong> {{ user.first_name }} <br>
+<strong>Nazwisko:</strong> {{ user.last_name }}<br>
+<strong>e-mail:</strong> {{ user.email }}<br><br>
+
+<a href="/walkadog/update_user/{{ request.user.id }}" class = "btn btn-default">Zaktualizuj dane</a>
+
+
+<h4> Dane profilu</h4>
+<strong>Województwo:</strong> {{ profile.get_voivodeship_display }} <br>
+<strong>Miasto:</strong> {{ profile.city }} <br>
+<strong>Ulubione miejsce na spacery:</strong> {{ profile.fav_walking_place }}<br><br>
+<br>
+
+<a href="/walkadog/update_profile/{{ profile.id }}" class = "btn btn-default">Zaktualizuj dane</a>
+
+
+<h4> Dane psa</h4>
+<ul>
+    {% for dog in dogs %}
+
+        <strong>Imię:</strong> {{ dog.name }} <br>
+        <strong>Płeć:</strong> {{ dog.get_gender_display }} <br>
+        <strong>Rok urodzenia:</strong> {{ dog.year_of_birth }}<br>
+        <strong>Rasa:</strong> {{ dog.breed }}<br>
+        <strong>Opis:</strong> {{ dog.description }}<br><br>
+
+        <a href="/walkadog/modify_dog/{{ dog.id }}" class = "btn btn-default">Zaktualizuj dane</a><br><br>
+    {% endfor %}
+</ul>
+
+
+
+
+{% endblock %}
+
