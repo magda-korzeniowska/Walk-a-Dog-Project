@@ -2,7 +2,7 @@ from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, redirect
 from django.views import View
 from django.views.generic import UpdateView
 
@@ -92,15 +92,11 @@ class AddDetailsView(View):
         return render(request, "walk_a_dog/userprofile_form.html", ctx)
 
 
-
-
 class ProfileDetailedView(View):
     def get(self, request, id):
         user = UserProfile.objects.get(pk=id)
         ctx = {'profile': user}
         return render(request, 'walk_a_dog/profile_details.html', ctx)
-
-
 
 class UpdateProfileView(UpdateView):
     template = 'walk_a_dog/userprofile_form.html'
@@ -124,9 +120,10 @@ class AddDogView(View):
             dog.user = request.user
             dog.save()
 
-            return HttpResponseRedirect(reverse('add_dog'))
+            return render(request, "walk_a_dog/dog_added.html")
+            # return HttpResponseRedirect(reverse('add-dog'))
         else:
-            return render(request, "add_dog.html", ctx)
+            return render(request, "walk_a_dog/add_dog.html", ctx)
 
 
 class ModifyDogView(PermissionRequiredMixin, UpdateView):
@@ -136,11 +133,18 @@ class ModifyDogView(PermissionRequiredMixin, UpdateView):
     fields = '__all__'
 
 class DogView(View):
-    def get(self, request, id):
-        User.objects.get(pk=id)
-        dogs = Dog.objects.all()
-        ctx = {'dogs': dogs}
-        return render(request, 'walk_a_dog/dog_details.html', ctx)
+    pass
+    # def get(self, request, id):
+    #     User.objects.get(pk=id)
+    #     dogs = Dog.objects.all()
+    #     ctx = {'dogs': dogs}
+    #     return render(request, 'walk_a_dog/dog_details.html', ctx)
+
+class WalkView(View):
+    def get(self, request):
+        walks = Walk.objects.all()
+        ctx = {'walks': walks}
+        return render(request, 'walk_a_dog/walks.html', ctx)
 
 
 class AddWalkView(View):
@@ -153,13 +157,30 @@ class AddWalkView(View):
         form = AddWalkForm(data=request.POST)
         ctx = {'form': form}
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('index'))
+            walk = form.save()
+            dogs = request.user.dog_set.all()
+            # print(dogs)
+            # print("walk", walk)
+            walk.dog.add(*dogs)
+            walk.save()
+            return render(request, "walk_a_dog/walks.html")
+            # return HttpResponseRedirect(reverse('index'))
         else:
-            return render(request, "add_walk.html", ctx)
+            return render(request, "walk_a_dog/add_walk.html", ctx)
 
 class ModifyWalkView(PermissionRequiredMixin, UpdateView):
     permission_required = ['walk_a_dog.change_walk']
     template_name = 'walk_a_dog/modify_walk.html'
     model = Walk
     fields = '__all__'
+
+class JoinWalkView(View):
+    def get(self, request, walk_id):
+        user = request.user
+        walk = Walk.objects.get(pk = walk_id)
+        dogs = request.user.dog_set.all()
+        walk.dog.add(*dogs)
+        walk.save()
+        return render(request, 'walk_a_dog/walks.html')
+
+

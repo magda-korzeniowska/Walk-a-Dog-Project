@@ -45,7 +45,7 @@ class AddDetailsForm(forms.Form):
 class AddDogForm(ModelForm):
     class Meta:
         model = Dog
-        widgets = {'description': Textarea (attrs={'cols': 80, 'rows': 10}),}
+        widgets = {'description': Textarea (attrs={'cols': 80, 'rows': 10})}
         fields = ['name', 'gender', 'avatar', 'year_of_birth', 'breed', 'description']
 
 class AddWalkForm(ModelForm):
@@ -55,5 +55,6 @@ class AddWalkForm(ModelForm):
                    'date_stop': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'dd.mm.rrrr gg:mm'})
                    }
         fields = ['voivodeship', 'city', 'place', 'date_start', 'date_stop']
+
 
 

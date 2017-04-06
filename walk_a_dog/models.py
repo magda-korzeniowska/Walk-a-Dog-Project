@@ -53,8 +53,6 @@ class UserProfile(models.Model):
 
 
 
-
-
 class Dog(models.Model):
     avatar = models.ImageField(upload_to='/static/', blank=True, null=True, verbose_name='Zdjęcie')
     name = models.CharField(max_length=64, verbose_name='Imię')
@@ -84,7 +82,7 @@ class Walk(models.Model):
         for dog in self.dog.all():
             a.append(dog.name)
         names = ", ".join(a)
-        return "{} | {} | {} | {}".format(self.get_voivodeship_display(), self.city, self.place, names)
+        return "{} | {} | {} | początek spaceru: {} | koniec spaceru: {} | {}".format(self.get_voivodeship_display(), self.city, self.place, self.date_start, self.date_stop, names)
 
     class Meta:
         verbose_name = 'Spacer'

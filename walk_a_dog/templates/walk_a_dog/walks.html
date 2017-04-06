@@ -1,0 +1,17 @@
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+
+<strong>WSZYSTKIE SPACERY</strong>
+
+    <ul>
+        {% for walk in walks %}
+            <li>{{ walk }} <a href="{% url 'join-walk' walk_id=walk.id %}">DOŁĄCZ DO SPACERU</a></li>
+        {% endfor %}
+
+    </ul>
+
+<a href="{% url 'add-walk' %}">DODAJ SPACER</a><br><br><br>
+
+
+{% endblock %}
