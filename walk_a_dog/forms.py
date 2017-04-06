@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.forms import ModelForm, Textarea
 
-from walk_a_dog.models import UserProfile, VOIVODESHIP, Dog, Walk
+from walk_a_dog.models import UserProfile, VOIVODESHIP, Dog, Walk, GENDER
 
 
 class RegisterProfileForm(forms.ModelForm):
@@ -42,6 +42,19 @@ class AddDetailsForm(forms.Form):
     city = forms.CharField(label="miasto", max_length=64)
     fav_walking_place = forms.CharField(label="ulubione miejsce na spacery", widget=forms.Textarea)
 
+
+# users = User.objects.all()
+#
+# class AddDogForm(forms.Form):
+#     name = forms.CharField(label="Imię")
+#     avatar = forms.ImageField(label="Zdjęcie")
+#     gender = forms.ChoiceField(label="Płeć", choices=GENDER)
+#     year_of_birth = forms.IntegerField(label="Rok urodzenia", min_value=2000)
+#     breed = forms.CharField(label="Rasa")
+#     description = forms.CharField(label="Opis", widget=forms.Textarea)
+#     user = forms.ModelChoiceField(label="Właściciel", queryset=users)
+
+
 class AddDogForm(ModelForm):
     class Meta:
         model = Dog
@@ -56,5 +69,5 @@ class AddWalkForm(ModelForm):
                    }
         fields = ['voivodeship', 'city', 'place', 'date_start', 'date_stop']
 
-
-
+class SearchWalkForm(forms.Form):
+    place = forms.CharField(label="Miejsce spaceru", max_length=128)

@@ -58,9 +58,9 @@ class Dog(models.Model):
     name = models.CharField(max_length=64, verbose_name='Imię')
     gender = models.IntegerField(choices=GENDER, verbose_name='Płeć')
     year_of_birth = models.IntegerField(verbose_name='Rok urodzenia')
-    breed = models.CharField(max_length=64, verbose_name='rasa')
+    breed = models.CharField(max_length=64, verbose_name='Rasa')
     description = models.TextField(blank=True, null=True, verbose_name='Opis')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Właściciel')
 
     def __str__(self):
         return "{} | {} | {} | {}".format(self.name, self.get_gender_display(), self.year_of_birth, self.breed)
@@ -68,6 +68,9 @@ class Dog(models.Model):
     class Meta:
         verbose_name = 'Pies'
         verbose_name_plural = 'Psy'
+
+    # def get_absolute_url(self):
+    #     return reverse('modify-dog', kwargs={'id': self.id})
 
 class Walk(models.Model):
     voivodeship = models.IntegerField(choices=VOIVODESHIP, verbose_name='Województwo')
@@ -89,32 +92,10 @@ class Walk(models.Model):
         verbose_name_plural = 'Spacery'
 
 
+    def get_absolute_url(self):
+        return reverse('search-dog', kwargs={'pk' : self.id})
 
 
-
-
-
-
-
-    #
-    #
-    #
-    #
-    # first_name = models.CharField(max_length=64)
-    # last_name =  models.CharField(max_length=64)
-    # nick_name = models.CharField(max_length=64)
-    # email = models.EmailField(max_length = 254)
-    #
-    #
-    # def __str__(self):
-    #     return self.name
-    #
-    # @property
-    # def name(self):
-    #     return "{} {}".format(self.last_name, self.first_name)
-    #
-    # def get_absolute_url(self):
-    #     return reverse('student', kwargs={'student_id': self.id}) #id studenta, więc self
 
 
 

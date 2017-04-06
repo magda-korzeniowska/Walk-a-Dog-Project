@@ -1,12 +1,14 @@
 from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, request
 from django.shortcuts import render, reverse, redirect
 from django.views import View
+from django.views.generic import DeleteView
 from django.views.generic import UpdateView
 
-from walk_a_dog.forms import AuthForm, RegisterProfileForm, AddDetailsForm, AddDogForm, AddWalkForm, AddWalkForm
+from walk_a_dog.forms import AuthForm, RegisterProfileForm, AddDetailsForm, AddDogForm, AddWalkForm, AddWalkForm, \
+SearchWalkForm
 from walk_a_dog.models import UserProfile, Dog, Walk
 
 
@@ -132,11 +134,65 @@ class AddDogView(View):
             return render(request, "walk_a_dog/add_dog.html", ctx)
 
 
-class ModifyDogView(PermissionRequiredMixin, UpdateView):
-    permission_required = ['walk_a_dog.change_dog']
+
+
+#------------------------------------------------------------------------------
+
+
+#
+# class ModifyDogView(View):
+#     # permission_required = ['walk_a_dog.change_dog']
+#
+#     def get(self, request, id):
+#         user = request.user
+#         dog = Dog.objects.get(user=request.user)
+#         form = AddDogForm(initial={
+#             'name': dog.name,
+#             'avatar': dog.avatar,
+#             'gender': dog.gender,
+#             'year_of_birth': dog.year_of_birth,
+#             'description': dog.description,
+#             'user': request.user
+#         })
+#         ctx = {'form': form,
+#                'dog': dog}
+#         return render(request, "walk_a_dog/modify_dog.html", ctx)
+#
+#     def post(self, request, id):
+#         dog = Dog.objects.get(pk=id)
+#         form = AddDogForm(data=request.POST)
+#         ctx = {'form': form,
+#                'dog': dog}
+#
+#         if form.is_valid():
+#             dog.name = form.cleaned_data['name']
+#             dog.avatar = form.cleaned_data['avatar']
+#             dog.gender = form.cleaned_data['gender']
+#             dog.year_of_birth = form.cleaned_data['year_of_birth']
+#             dog.description = form.cleaned_data['description']
+#             dog.user = form.cleaned_data['user']
+#
+#             dog.save()
+#             return HttpResponseRedirect('/walkadog/modify_profile/{}').format(self.id)
+#
+#         return render(request, "Walk_a_dog/modify_dog.html", ctx)
+
+
+
+class ModifyDogView(UpdateView):
+    # permission_required = ['walk_a_dog.change_dog']
+
     template_name = 'walk_a_dog/modify_dog.html'
     model = Dog
     fields = '__all__'
+    success_url = '/walkadog'
+
+
+
+#-------------------------------------------------------------------------------
+
+
+
 
 class DogView(View):
     pass
@@ -170,7 +226,6 @@ class AddWalkView(View):
             walk.dog.add(*dogs)
             walk.save()
             return render(request, "walk_a_dog/walks.html")
-            # return HttpResponseRedirect(reverse('index'))
         else:
             return render(request, "walk_a_dog/add_walk.html", ctx)
 
@@ -190,25 +245,32 @@ class JoinWalkView(View):
         return render(request, 'walk_a_dog/join_walk.html')
 
 
-
-
-#
-#
-# class ProfileView(View):
-#     def get(self, request, id):
-#         user = User.objects.get(pk=id)
-#         ctx = {'profile': user}
-#         return render(request, 'walk_a_dog/profile.html', ctx)
-
-
 class ModifyProfileView(View):
-    def get(self, request, id):
+    def get(self, request):
         user = request.user
-        profile = UserProfile.objects.get(pk=id) #(user=request.user)
+        profile = UserProfile.objects.get(user=request.user) #(user=request.user)
         dogs = request.user.dog_set.all()
         ctx = {'profile': profile,
                'user': user,
                'dogs': dogs}
         return render(request, 'walk_a_dog/modify_profile.html', ctx)
 
+class SearchWalkView(View):
 
+    def get(self,request):
+        form = SearchWalkForm()
+        ctx = {'form': form}
+        return render(request,'walk_a_dog/search_results.html', ctx)
+
+    def post(self,request):
+        form = SearchWalkForm(data=request.POST)
+        ctx = {'form': form}
+        if form.is_valid():
+            place  = form.cleaned_data['place']
+            walks = Walk.objects.filter(place__icontains=place)
+            ctx['results'] = walks
+        return render(request, 'walk_a_dog/search_walk.html', ctx)
+
+class DeleteWalkView(DeleteView):
+    model = Walk
+    success_url = '/'

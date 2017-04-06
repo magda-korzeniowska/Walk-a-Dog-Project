@@ -26,12 +26,14 @@ from walk_a_dog.views import (
     AddDetailsView,
     UpdateProfileView, AddDogView, ModifyDogView, AddWalkView, ModifyWalkView, DogView, WalkView, JoinWalkView,
     UpdateUserView,
-    ModifyProfileView
-    )
+    ModifyProfileView,
+    SearchWalkView,
+    DeleteWalkView)
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url('^accounts/', admin.site.urls),
     url(r'^walkadog$', IndexView.as_view(), name="index"),
     url(r'^walkadog/login$', LoginView.as_view(), name='login'),
     url(r'^walkadog/logout$', LogoutView.as_view(), name='logout'),
@@ -41,7 +43,7 @@ urlpatterns = [
     url(r'^walkadog/profile_details/(?P<id>(\d)+)$', ProfileDetailedView.as_view(), name='profile-details'),
     url(r'^walkadog/update_user/(?P<pk>(\d+))$', UpdateUserView.as_view(), name='update-user'),
     url(r'^walkadog/update_profile/(?P<pk>(\d+))$', UpdateProfileView.as_view(), name='update-profile'),
-    url(r'^walkadog/modify_profile/(?P<id>(\d+))', ModifyProfileView.as_view(), name='modify-profile'),
+    url(r'^walkadog/modify_profile/', ModifyProfileView.as_view(), name='modify-profile'),
     url(r'^walkadog/add_dog$', AddDogView.as_view(), name='add-dog'),
     # url(r'^walkadog/dog_added$', AddDogView.as_view(), name='dog-added'),
     url(r'^walkadog/modify_dog/(?P<pk>(\d+))', ModifyDogView.as_view(), name='modify-dog'),
@@ -50,11 +52,6 @@ urlpatterns = [
     url(r'^walkadog/add_walk$', AddWalkView.as_view(), name='add-walk'),
     url(r'^walkadog/join_walk/(?P<walk_id>(\d+))$', JoinWalkView.as_view(), name='join-walk'),
     url(r'^walkadog/modify_walk/(?P<pk>(\d+))', ModifyWalkView.as_view(), name='modify-walk'),
-
-
-
-    # url(r'^category/(?P<slug>[-\w]+)', CategoryView.as_view(), name="category"),
-    # # !!!!! slug tu wchodzi dziwny więc -\w
-    # url(r'^product/(?P<product_id>(\d)+)', ProductView.as_view(), name="product"),
-    # # url(r'^products/$', ProductsView.as_view(), name='products'),
+    url(r'^walkadog/search_walk/', SearchWalkView.as_view(), name='search-walk'),
+    url(r'^walkadog/delete_walk/', DeleteWalkView.as_view(), name='delete-walk'),
 ]
