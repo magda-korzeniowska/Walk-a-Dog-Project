@@ -1,0 +1,17 @@
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+<ul>
+    {% for dog in dogs %}
+
+        <strong>Imię:</strong> {{ dog.name }} <br>
+        <strong>Płeć:</strong> {{ dog.get_gender_display }} <br>
+        <strong>Rok urodzenia:</strong> {{ dog.year_of_birth }}<br>
+        <strong>Rasa:</strong> {{ dog.breed }}<br>
+        <strong>Opis:</strong> {{ dog.description }}<br>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'add-dog' %}">DODAJ PSA</a><br><br><br>
+
+{% endblock %}

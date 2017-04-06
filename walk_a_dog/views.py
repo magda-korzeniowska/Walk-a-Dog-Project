@@ -27,7 +27,7 @@ class RegisterProfileView(View):
         ctx = {'form': form}
         if form.is_valid():
             user = form.save()
-            userprofile = UserProfile.objects.create(user=user) #rozszerzenie o extended user
+            #userprofile = UserProfile.objects.create(user=user) #rozszerzenie o extended user
             login(request, user)
             return HttpResponseRedirect(reverse('add-details'))
         else:
@@ -79,18 +79,20 @@ class AddDetailsView(View):
         if form.is_valid():
             voivodeship = form.cleaned_data['voivodeship']
             city = form.cleaned_data['city']
-            place = form.cleaned_data['place']
             fav_walking_place = form.cleaned_data['fav_walking_place']
 
             userprofile = UserProfile.objects.create(
+                user=request.user,
                 voivodeship=voivodeship,
                 city=city,
-                place=place,
                 fav_walking_place=fav_walking_place
             )
             return HttpResponseRedirect(userprofile.get_absolute_url())
 
         return render(request, "walk_a_dog/userprofile_form.html", ctx)
+
+
+
 
 class ProfileDetailedView(View):
     def get(self, request, id):
@@ -98,10 +100,12 @@ class ProfileDetailedView(View):
         ctx = {'profile': user}
         return render(request, 'walk_a_dog/profile_details.html', ctx)
 
+
+
 class UpdateProfileView(UpdateView):
     template = 'walk_a_dog/userprofile_form.html'
     model = UserProfile
-    fields = ['voivodeship','city', 'place', 'fav_walking_place']
+    fields = ['voivodeship','city','fav_walking_place']
     success_url = 'index.html'
 
 
@@ -116,16 +120,28 @@ class AddDogView(View):
         form = AddDogForm(data=request.POST)
         ctx = {'form': form}
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('index'))
+            dog = form.save(commit=False)       #nie komituje się od razu, tylko czeka na cały obiekt
+            dog.user = request.user
+            dog.save()
+
+            return HttpResponseRedirect(reverse('add_dog'))
         else:
             return render(request, "add_dog.html", ctx)
+
 
 class ModifyDogView(PermissionRequiredMixin, UpdateView):
     permission_required = ['walk_a_dog.change_dog']
     template_name = 'walk_a_dog/modify_dog.html'
     model = Dog
     fields = '__all__'
+
+class DogView(View):
+    def get(self, request, id):
+        User.objects.get(pk=id)
+        dogs = Dog.objects.all()
+        ctx = {'dogs': dogs}
+        return render(request, 'walk_a_dog/dog_details.html', ctx)
+
 
 class AddWalkView(View):
 

@@ -24,7 +24,7 @@ from walk_a_dog.views import (
     ProfileView,
     ProfileDetailedView,
     AddDetailsView,
-    UpdateProfileView, AddDogView, ModifyDogView, AddWalkView, ModifyWalkView)
+    UpdateProfileView, AddDogView, ModifyDogView, AddWalkView, ModifyWalkView, DogView)
 
 
 urlpatterns = [
@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^walkadog/update_profile/(?P<pk>(\d+))$', UpdateProfileView.as_view(), name='update-profile'),
     url(r'^walkadog/add_dog$', AddDogView.as_view(), name='add-dog'),
     url(r'^walkadog/modify_dog/(?P<pk>(\d+))', ModifyDogView.as_view(), name='modify-dog'),
+    url(r'^walkadog/dog_details/(?P<id>(\d+))', DogView.as_view(), name='dog_details'),
     url(r'^walkadog/add_walk$', AddWalkView.as_view(), name='add-walk'),
     url(r'^walkadog/modify_walk/(?P<pk>(\d+))', ModifyWalkView.as_view(), name='modify-walk'),
 

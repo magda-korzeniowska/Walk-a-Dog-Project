@@ -45,6 +45,16 @@ class UserProfile(models.Model):
     def get_absolute_url(self):
         return reverse('profile-details', kwargs={'id': self.id})
 
+    #
+    #
+    #
+    # def get_absolute_url(self):
+    #     return reverse('update-profile', kwargs={'pk': self.id})
+
+
+
+
+
 class Dog(models.Model):
     avatar = models.ImageField(upload_to='/static/', blank=True, null=True, verbose_name='Zdjęcie')
     name = models.CharField(max_length=64, verbose_name='Imię')
