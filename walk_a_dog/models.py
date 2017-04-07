@@ -54,7 +54,7 @@ class UserProfile(models.Model):
 
 
 class Dog(models.Model):
-    avatar = models.ImageField(upload_to='/static/', blank=True, null=True, verbose_name='Zdjęcie')
+    avatar = models.ImageField(upload_to='walk_a_dog/static/', blank=True, null=True, verbose_name='Zdjęcie')
     name = models.CharField(max_length=64, verbose_name='Imię')
     gender = models.IntegerField(choices=GENDER, verbose_name='Płeć')
     year_of_birth = models.IntegerField(verbose_name='Rok urodzenia')
