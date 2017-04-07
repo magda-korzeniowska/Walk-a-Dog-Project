@@ -1,13 +1,11 @@
 {% extends 'walk_a_dog/index.html' %}
 
 {% block content %}
-{% if request.user.id == object.user.id %}
+
 <form action="" method="post">
     {% csrf_token %}
     <p>Czy jesteś pewien, że chcesz usunąć {{ object.walk.place }}?</p>
     <input type="submit" value="Potwierdź">
 </form>
-{% else %}
-<p>Nie masz uprawnień!</p>
-{% endif %}
+
 {% endblock %}

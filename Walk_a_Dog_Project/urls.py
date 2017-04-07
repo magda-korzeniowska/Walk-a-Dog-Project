@@ -24,11 +24,11 @@ from walk_a_dog.views import (
     ProfileView,
     ProfileDetailedView,
     AddDetailsView,
-    UpdateProfileView, AddDogView, ModifyDogView, AddWalkView, ModifyWalkView, DogView, WalkView, JoinWalkView,
+    UpdateProfileView, AddDogView, ModifyDogView, AddWalkView, ModifyWalkView, DogView, WalksView, JoinWalkView,
     UpdateUserView,
     ModifyProfileView,
     SearchWalkView,
-    DeleteWalkView)
+    DeleteWalkView, WalkView)
 
 
 urlpatterns = [
@@ -47,8 +47,13 @@ urlpatterns = [
     url(r'^walkadog/add_dog$', AddDogView.as_view(), name='add-dog'),
     # url(r'^walkadog/dog_added$', AddDogView.as_view(), name='dog-added'),
     url(r'^walkadog/modify_dog/(?P<pk>(\d+))', ModifyDogView.as_view(), name='modify-dog'),
-    url(r'^walkadog/dog_details/(?P<id>(\d+))', DogView.as_view(), name='dog_details'),
-    url(r'^walkadog/walks$', WalkView.as_view(), name='walks'),
+    # url(r'^walkadog/dog_details/(?P<id>(\d+))', DogView.as_view(), name='dog_details'),
+    url(r'^walkadog/walks$', WalksView.as_view(), name='walks'),
+    url(r'^walkadog/walks/(?P<walk_id>(\d+))', WalkView.as_view(), name='walk'),
+    url(r'^walkadog/dog_details/(?P<dog_id>(\d+))', DogView.as_view(), name='dog'),
+
+
+
     url(r'^walkadog/add_walk$', AddWalkView.as_view(), name='add-walk'),
     url(r'^walkadog/join_walk/(?P<walk_id>(\d+))$', JoinWalkView.as_view(), name='join-walk'),
     url(r'^walkadog/modify_walk/(?P<pk>(\d+))', ModifyWalkView.as_view(), name='modify-walk'),

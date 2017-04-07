@@ -1,0 +1,17 @@
+{% extends 'walk_a_dog/index.html' %}
+
+{% block content %}
+
+<strong>SZCZEGÓŁY SPACERU</strong><br><br>
+
+<strong>Miejsce spaceru:</strong> {{ walk.place }} <br>
+<strong>Początek spaceru:</strong> {{ walk.date_start }} <br>
+<strong>Koniec spaceru:</strong> {{ walk.date_stop }}<br>
+<strong>Psy:</strong><br>
+{% for dog in dogs %}
+<a href="{% url 'dog' dog_id=dog.id %}">{{ dog.name }}</a>
+{% endfor %}
+
+
+{% endblock %}
+

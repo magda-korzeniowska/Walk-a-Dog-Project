@@ -1,17 +1,14 @@
-{% extends 'walk_a_dog/index.html' %}
+{% extends 'walk_a_dog/search_walk.html' %}
 
-{% block content %}
-<form action="{% url 'search-walk' %}" method="POST">
-     {% csrf_token %}
-    {{ form }}
-<input type="submit" value="Szukaj">
-</form>
+{% block results %}
 
 <ol>
-{% for walk in walks %}
-<li><a href="{{ walk.get_absolute_url }}">{{ walk.place }}</a></li>
-    {% empty %}
-    Pusto
+{% for walk in results %}
+<li><a href="/walkadog/walks/{{ walk.id }}">{{ walk.place }}</a></li>
+
 {% endfor %}
 </ol>
+
 {% endblock %}
+
+

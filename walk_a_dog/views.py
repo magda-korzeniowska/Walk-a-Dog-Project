@@ -6,6 +6,7 @@ from django.shortcuts import render, reverse, redirect
 from django.views import View
 from django.views.generic import DeleteView
 from django.views.generic import UpdateView
+from datetime import datetime
 
 from walk_a_dog.forms import AuthForm, RegisterProfileForm, AddDetailsForm, AddDogForm, AddWalkForm, AddWalkForm, \
 SearchWalkForm
@@ -193,21 +194,26 @@ class ModifyDogView(UpdateView):
 
 
 
-
 class DogView(View):
-    pass
-    # def get(self, request, id):
-    #     User.objects.get(pk=id)
-    #     dogs = Dog.objects.all()
-    #     ctx = {'dogs': dogs}
-    #     return render(request, 'walk_a_dog/dog_details.html', ctx)
+    def get(self, request, dog_id):
+        dog = Dog.objects.get(pk=dog_id)
+        ctx = {'dog': dog}
+        return render(request, 'walk_a_dog/dog.html', ctx)
 
-class WalkView(View):
+
+class WalksView(View):
     def get(self, request):
-        walks = Walk.objects.all()
+        walks = Walk.objects.filter(date_stop__gt=datetime.now())
         ctx = {'walks': walks}
         return render(request, 'walk_a_dog/walks.html', ctx)
 
+class WalkView(View):
+    def get(self, request, walk_id):
+        walk = Walk.objects.get(pk=walk_id)
+        dogs = walk.dog.all()
+        ctx = {'walk': walk,
+               'dogs': dogs }
+        return render(request, 'walk_a_dog/walk.html', ctx)
 
 class AddWalkView(View):
 
@@ -244,7 +250,6 @@ class JoinWalkView(View):
         walk.save()
         return render(request, 'walk_a_dog/join_walk.html')
 
-
 class ModifyProfileView(View):
     def get(self, request):
         user = request.user
@@ -260,16 +265,16 @@ class SearchWalkView(View):
     def get(self,request):
         form = SearchWalkForm()
         ctx = {'form': form}
-        return render(request,'walk_a_dog/search_results.html', ctx)
+        return render(request,'walk_a_dog/search_walk.html', ctx)
 
     def post(self,request):
         form = SearchWalkForm(data=request.POST)
         ctx = {'form': form}
         if form.is_valid():
             place  = form.cleaned_data['place']
-            walks = Walk.objects.filter(place__icontains=place)
+            walks = Walk.objects.filter(place__icontains=place).filter(date_stop__gt=datetime.now())
             ctx['results'] = walks
-        return render(request, 'walk_a_dog/search_walk.html', ctx)
+        return render(request, 'walk_a_dog/search_results.html', ctx)
 
 class DeleteWalkView(DeleteView):
     model = Walk
